@@ -7,13 +7,21 @@
   const random = max => Math.floor(Math.random() * (max + 1));
   const speechSupported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
   let speechSequence = 0;
+  function englishNumber(value) {
+    const ones=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+    const tens=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+    const n=Number(value);
+    if(n<20)return ones[n];
+    if(n<100)return tens[Math.floor(n/10)]+(n%10?' '+ones[n%10]:'');
+    return n===100?'one hundred':String(n);
+  }
   function speak(zh, en) {
     const sequence=++speechSequence;
     if(!speechSupported)return;
     window.speechSynthesis.cancel();
     const lang=$('voice-language').value;
     if(lang==='off')return;
-    const utterance=new SpeechSynthesisUtterance(lang==='zh-CN'?zh:en);
+    const utterance=new SpeechSynthesisUtterance(lang==='zh-CN'?zh:en.replace(/\b\d+\b/g,englishNumber));
     utterance.lang=lang; utterance.rate=.85;
     const voices=window.speechSynthesis.getVoices();
     const voice=voices.find(v=>v.lang===lang)||voices.find(v=>v.lang.startsWith(lang.slice(0,2)));
