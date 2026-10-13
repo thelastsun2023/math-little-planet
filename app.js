@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
-  const modes = {'10-add': {limit:10,op:'+',label:'10 以内加法'},'10-sub':{limit:10,op:'−',label:'10 以内减法'},'100-add':{limit:100,op:'+',label:'100 以内加法'},'100-sub':{limit:100,op:'−',positive:true,label:'100 以内减法'},'20-sub':{limit:20,op:'−',positive:true,label:'20 以内减法'},'10-mul':{limit:10,op:'×',label:'10 以内乘法'},'100-div':{limit:100,op:'÷',label:'100 以内除法'}};
+  const modes = {'10-add': {limit:10,op:'+',label:'10 以内加法'},'100-add':{limit:100,op:'+',label:'100 以内加法'},'100-sub':{limit:100,op:'−',positive:true,label:'100 以内减法'},'20-sub':{limit:20,op:'−',positive:true,label:'20 以内减法'},'10-mul':{limit:10,op:'×',label:'10 以内乘法'},'100-div':{limit:100,op:'÷',label:'100 以内除法'}};
   const state = {mode:null,questions:[],index:0,input:'',locked:false,correct:0,wrong:0,finished:false};
   const random = max => Math.floor(Math.random() * (max + 1));
   const speechSupported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
@@ -143,3 +143,4 @@
   $('choose').addEventListener('click',()=>{cancelAdvance();++speechSequence;if(speechSupported)window.speechSynthesis.cancel();updateTime();});
   if(!speechSupported){$('voice-language').value='off';$('voice-language').disabled=true;$('read-question').disabled=true;$('voice-note').textContent='此浏览器不支持语音朗读';}
 })();
+
