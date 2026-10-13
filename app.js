@@ -18,8 +18,8 @@
   function advance(){if(!state.locked||state.finished||!state.mode)return;cancelAdvance();if(state.index===19)finish();else{state.index++;renderQuestion();}}
   function scheduleAdvance(){
     const index=state.index,started=state.started;
-    $('next-hint').textContent=state.index===19?'3 秒后自动查看成绩':'3 秒后自动进入下一题';
-    autoNext=setTimeout(()=>{if(state.started===started&&state.index===index&&state.locked&&!state.finished)advance();},3000);
+    $('next-hint').textContent=state.index===19?'1 秒后自动查看成绩':'1 秒后自动进入下一题';
+    autoNext=setTimeout(()=>{if(state.started===started&&state.index===index&&state.locked&&!state.finished)advance();},1000);
   }
   function englishNumber(value) {
     const ones=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
@@ -36,9 +36,11 @@
     const lang=$('voice-language').value;
     if(lang==='off'){if(complete)complete();return;}
     const utterance=new SpeechSynthesisUtterance(lang==='zh-CN'?zh:en.replace(/\b\d+\b/g,englishNumber));
-    utterance.lang=lang; utterance.rate=.85;
+    utterance.lang=lang; utterance.rate=.98; utterance.pitch=1.12;
     const voices=window.speechSynthesis.getVoices();
-    const voice=voices.find(v=>v.lang===lang)||voices.find(v=>v.lang.startsWith(lang.slice(0,2)));
+    const candidates=voices.filter(v=>v.lang.toLowerCase().startsWith(lang.slice(0,2).toLowerCase()));
+    const preference=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?100:0)+(/xiaoxiao|xiaoyi|tingting|samantha|aria|jenny/i.test(v.name)?40:0)+(v.lang===lang?10:0);
+    const voice=candidates.sort((a,b)=>preference(b)-preference(a))[0];
     if(voice)utterance.voice=voice;
     let completed=false;
     const done=()=>{if(!completed&&sequence===speechSequence){completed=true;if(complete)complete();}};
@@ -102,7 +104,7 @@
     $('feedback').textContent=correct?'答对啦！真棒 ✦':reveal?'正确答案已显示，本题记为错误':`再接再厉！正确答案是 ${q.answer}`;
     $('next-hint').textContent=state.index===19?'点击显示屏，查看成绩 →':'点击显示屏，进入下一题 →';
     $('progress-fill').style.width=`${(state.index+1)/20*100}%`; keyboardDisabled(true);
-    if(correct){$('next-hint').textContent='语音结束后 3 秒自动继续';speak('真棒，做对了！','Great job! You got it right!',scheduleAdvance);}
+    if(correct){$('next-hint').textContent='语音结束后 1 秒自动继续';speak('真棒，做对了！','Great job! You got it right!',scheduleAdvance);}
     else if(reveal)speak(`正确答案是${q.answer}，本题记为错误。`, `The answer is ${q.answer}. This question counts as incorrect.`);
     else speak(`哎呀，做错了。正确答案是${q.answer}。再试试，你可以的！`,`Oops, that was incorrect. The answer is ${q.answer}. Keep trying!`);
   }
@@ -143,4 +145,5 @@
   $('choose').addEventListener('click',()=>{cancelAdvance();++speechSequence;if(speechSupported)window.speechSynthesis.cancel();updateTime();});
   if(!speechSupported){$('voice-language').value='off';$('voice-language').disabled=true;$('read-question').disabled=true;$('voice-note').textContent='此浏览器不支持语音朗读';}
 })();
+
 

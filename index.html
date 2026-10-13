@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#faf6ee"><title>口算小星球 · 每天进步一点点</title><link rel="stylesheet" href="style.css?v=remove10sub4"><script src="app.js?v=remove10sub4" defer></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#faf6ee"><title>口算小星球 · 每天进步一点点</title><link rel="stylesheet" href="style.css?v=voice5"><script src="app.js?v=voice5" defer></script></head>
 <body><main class="app">
 <header><div class="brand"><span class="logo">✦</span><div><h1>口算小星球</h1><p>每天 20 题，进步一点点</p></div></div><span class="badge">离线也能练</span></header>
 <section class="modes" aria-label="选择练习模式"><button data-mode="10-add"><small>初级 · 加法</small>10 以内加法<span>＋</span></button><button data-mode="100-add"><small>进阶 · 加法</small>100 以内加法<span>＋</span></button><button data-mode="100-sub"><small>进阶 · 减法</small>100 以内减法<span>−</span></button><button data-mode="20-sub">20 以内减法</button><button data-mode="10-mul">10 以内乘法</button><button data-mode="100-div">100 以内除法</button></section>
@@ -10,6 +10,7 @@
 <div class="keypad" aria-label="答题键盘"><button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button><button data-key="+" class="operator">＋</button><button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button><button data-key="−" class="operator">−</button><button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button><button data-key="×" class="operator">×</button><button data-key="clear" class="utility">清除</button><button data-key="0">0</button><button data-key="back" class="utility" aria-label="退格">⌫</button><button data-key="÷" class="operator">÷</button><button data-key="answer" class="answer">答案 <span>看一看</span></button><button data-key="=" class="submit">＝ <span>确认答案</span></button></div><p class="tip">输入答案 → 按 ＝ 核对 → 点击显示屏继续</p></section>
 <section id="results" class="results" hidden><div class="medal">★</div><p class="eyebrow">挑战完成</p><h2>又迈出了一小步！</h2><p id="result-message"></p><div class="stats"><div><strong id="correct-count"></strong><span>正确题数</span></div><div><strong id="wrong-count"></strong><span>错误题数</span></div><div><strong id="correct-rate"></strong><span>正确率</span></div><div><strong id="wrong-rate"></strong><span>错误率</span></div></div><div class="time-summary"><p>答题用时 <strong id="answer-total"></strong></p><p>整轮总时间 <strong id="round-total"></strong></p><p>平均每题 <strong id="average-time"></strong></p><small>答题用时：出题至判分；总时间包含语音与等待。</small></div><details><summary>查看每题用时</summary><table><thead><tr><th>题号</th><th>算式</th><th>结果</th><th>用时</th></tr></thead><tbody id="time-details"></tbody></table></details><button id="restart" class="primary">再练 20 题</button><button id="choose" class="secondary">选择其他模式</button></section>
 <button id="reset-page" class="reset-page">↻ 复位</button><footer>小小练习，大大进步 ✦</footer></main></body></html>
+
 
 
 
