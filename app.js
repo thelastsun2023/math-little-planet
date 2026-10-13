@@ -132,6 +132,11 @@
   $('choose').addEventListener('click',()=>{state.mode=null;state.finished=false;$('results').hidden=true;$('practice').hidden=false;document.querySelectorAll('[data-mode]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});$('counter').textContent='20 题小挑战';$('mode-label').textContent='选择新模式，继续出发';$('progress-fill').style.width='0';$('screen').className='screen';$('screen-state').textContent='READY';$('equation').textContent='你好，小星星！';$('input').textContent='选择上方模式开始';$('feedback').textContent='每一次练习都是进步';$('next-hint').textContent='每次练习 20 题';keyboardDisabled(true);});
   document.addEventListener('keydown',e=>{if(e.ctrlKey||e.altKey||e.metaKey||e.target.closest('[data-mode],#restart,#choose'))return;const map={Enter:'=',Backspace:'back',Delete:'clear','-':'−','*':'×','/':'÷'};if(e.key===' ' && state.locked){e.preventDefault();$('screen').click();}else if(/^\d$/.test(e.key)||map[e.key]||e.key==='+'){e.preventDefault();key(map[e.key]||e.key);}});
   keyboardDisabled(true);
+  $('reset-page').addEventListener('click',()=>{
+    cancelAdvance();++speechSequence;
+    if(speechSupported)window.speechSynthesis.cancel();
+    window.location.reload();
+  });
   setInterval(updateTime,100);
   $('read-question').addEventListener('click',readQuestion);
   $('voice-language').addEventListener('change',()=>{if(speechSupported)window.speechSynthesis.cancel();$('voice-note').textContent='';readQuestion();});
