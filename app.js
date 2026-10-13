@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
-  const modes = {'10-add': {limit:10,op:'+',label:'10 以内加法'},'10-sub':{limit:10,op:'−',label:'10 以内减法'},'100-add':{limit:100,op:'+',label:'100 以内加法'},'100-sub':{limit:100,op:'−',label:'100 以内减法'}};
+  const modes = {'10-add': {limit:10,op:'+',label:'10 以内加法'},'10-sub':{limit:10,op:'−',label:'10 以内减法'},'100-add':{limit:100,op:'+',label:'100 以内加法'},'100-sub':{limit:100,op:'−',positive:true,label:'100 以内减法'},'20-sub':{limit:20,op:'−',positive:true,label:'20 以内减法'},'10-mul':{limit:10,op:'×',label:'10 以内乘法'},'100-div':{limit:100,op:'÷',label:'100 以内除法'}};
   const state = {mode:null,questions:[],index:0,input:'',locked:false,correct:0,wrong:0,finished:false};
   const random = max => Math.floor(Math.random() * (max + 1));
   const speechSupported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
@@ -51,11 +51,15 @@
     if(!state.mode || state.finished)return;
     if(state.locked&&state.lastCorrect){cancelAdvance();speak('真棒，做对了！','Great job! You got it right!',scheduleAdvance);return;}
     const q=state.questions[state.index];
-    speak(`${q.a}${q.op==='+'?'加':'减'}${q.b}等于多少？`,`${q.a} ${q.op==='+'?'plus':'minus'} ${q.b} equals what?`);
+    const words={'+':['加','plus'],'−':['减','minus'],'×':['乘以','times'],'÷':['除以','divided by']};
+    speak(`${q.a}${words[q.op][0]}${q.b}等于多少？`,`${q.a} ${words[q.op][1]} ${q.b} equals what?`);
   }
   function generate(mode) {
-    const {limit,op} = modes[mode];
+    const {limit,op,positive} = modes[mode];
     return Array.from({length:20},()=>{
+      if(op==='×'){const a=1+random(9),b=1+random(9);return {a,b,op,answer:a*b};}
+      if(op==='÷'){const b=1+random(limit-1),answer=1+random(Math.floor(limit/b)-1);return {a:b*answer,b,op,answer};}
+      if(positive){const a=1+random(limit-1),b=random(a-1);return {a,b,op,answer:a-b};}
       const a=random(limit), b=random(op==='+' ? limit-a : a);
       return {a,b,op,answer:op==='+' ? a+b : a-b};
     });
